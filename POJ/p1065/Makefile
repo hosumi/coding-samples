@@ -1,5 +1,6 @@
 # directory name == problem id
 PROGRAM=$(shell basename `pwd`)
+SRCS=$(PROGRAM).cpp
 OBJS=$(PROGRAM).o
 
 INPUT=$(PROGRAM).in
@@ -10,17 +11,18 @@ CXX=g++
 CXXFLAGS=-Wall
 
 .SUFFIXES:.cpp .o
-.PHONY: all run clean
+.PHONY: all run clean judge
 
-$(PROGRAM): $(OBJS)
-	$(CXX) -o $(PROGRAM) $^
+all: judge
 
-.cpp.o:
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $<
+run: $(SRCS) $(INPUT) $(ANSWER)
+	$(CXX) $(CXXFLAGS) $(SRCS) -o $(PROGRAM)
+	$(RM) $(OUTPUT)
+	cat $(INPUT) | ./$(PROGRAM) | tee $(OUTPUT)
+	diff -sc $(OUTPUT) $(ANSWER)
 
-all: run
-
-run: $(PROGRAM) $(INPUT) $(ANSWER)
+judge: $(SRCS) $(INPUT) $(ANSWER)
+	$(CXX) $(CXXFLAGS) -DONLINE_JUDGE $(SRCS) -o $(PROGRAM)
 	$(RM) $(OUTPUT)
 	cat $(INPUT) | ./$(PROGRAM) | tee $(OUTPUT)
 	diff -sc $(OUTPUT) $(ANSWER)
