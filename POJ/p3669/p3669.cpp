@@ -67,47 +67,43 @@ int main(void){
     
     // search the goal state by DFS
     int answer = -1; // = unreachable
-    queue<State*> q;
-    State* start = new State(0,0,0);
-    field[start->x][start->y].visited = true;
+    queue<State> q;
+    const State start(0,0,0);
+    field[start.x][start.y].visited = true;
     q.push(start);
 
     // shortcut    
-    if (!is_safe(*start)) {
+    if (!is_safe(start)) {
         goto END;
     }
-    if (is_goal(*start)){
-        answer = start->t; // 0
+    if (is_goal(start)){
+        answer = start.t; // 0
         goto END;
     }
 
     while(!q.empty()){
-        State* s = q.front(); q.pop();
-        //printf("pop(): "); print(*s); print(field[s->x][s->y]); putchar('\n'); //debug
-        const int x = s->x; const int y = s->y; const int t = s->t;
-        delete s;
+        const State s = q.front(); q.pop();
+        //printf("pop(): "); print(s); print(field[s.x][s.y]); putchar('\n'); //debug
         
         // Generate 4 movable points and select possible next state, and push them into the queue
         for (int i = 0; i < 4; i++){
-            const int next_x = x + dx[i]; const int next_y = y + dy[i]; const int next_t = t + 1;
+            const int next_x = s.x + dx[i]; const int next_y = s.y + dy[i]; const int next_t = s.t + 1;
             if (!in_field(next_x, next_y)){
                 continue;
             }
             
-            State* next_s = new State(next_x, next_y, next_t);
-            if (is_goal(*next_s)) {
-                //printf(" GOAL: "); print(*next_s); print(field[next_s->x][next_s->y]); putchar('\n'); //debug
-                answer = next_s->t;
-                delete next_s;
+            const State next_s(next_x, next_y, next_t);
+            if (is_goal(next_s)) {
+                //printf(" GOAL: "); print(next_s); print(field[next_s.x][next_s.y]); putchar('\n'); //debug
+                answer = next_s.t;
                 goto END;
             } 
-            if (!is_safe(*next_s) || field[next_s->x][next_s->y].visited) {
-                //printf(" xxxx: "); print(*next_s); print(field[next_s->x][next_s->y]); putchar('\n'); //debug
-                delete next_s;
+            if (!is_safe(next_s) || field[next_s.x][next_s.y].visited) {
+                //printf(" xxxx: "); print(next_s); print(field[next_s.x][next_s.y]); putchar('\n'); //debug
                 continue;
             }
-            //printf(" push: "); print(*next_s); print(field[next_s->x][next_s->y]); putchar('\n'); //debug
-            field[next_s->x][next_s->y].visited = true;
+            //printf(" push: "); print(next_s); print(field[next_s.x][next_s.y]); putchar('\n'); //debug
+            field[next_s.x][next_s.y].visited = true;
             q.push(next_s);
         }
     }
