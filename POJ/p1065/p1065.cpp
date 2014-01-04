@@ -1,3 +1,7 @@
+/**
+  Wooden Sticks
+  http://poj.org/problem?id=1065
+ */
 #include <iostream>
 #include <iterator>
 #include <vector>
