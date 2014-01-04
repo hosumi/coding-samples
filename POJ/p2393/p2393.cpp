@@ -1,3 +1,7 @@
+/**
+  Yogurt factory
+  http://poj.org/problem?id=2393
+*/
 #include <iostream>
 #include <algorithm>
 
