@@ -1,3 +1,7 @@
+/**
+  Meteor Shower
+  http://poj.org/problem?id=3669
+*/
 #include <cstdio>
 #include <queue>
 
