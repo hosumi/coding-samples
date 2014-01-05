@@ -88,7 +88,7 @@ int main(void){
     // Lines 2..C+1: Line i describes cow i's lotion requires 
     // with two integers: minSPF_i and maxSPF_i
     Cows cows;
-    for (int i = 0; i < C; ++i){
+    for(int i = 0; i < C; ++i){
         int min_spf_i, max_spf_i; cin >> min_spf_i >> max_spf_i;
         cows.push_back(Cow(min_spf_i, max_spf_i));
     }
@@ -96,7 +96,7 @@ int main(void){
     // Lines C+2..C+L+1: Line i+C+1 describes a sunscreen lotion bottle i 
     // with space-separated integers: SPF_i and cover_i
     Bottles bottles;
-    for (int i = 0; i < L; ++i){
+    for(int i = 0; i < L; ++i){
         int spf_i, cover_i; cin >> spf_i >> cover_i;
         bottles.push_back(Bottle(spf_i, cover_i));
     }
@@ -116,20 +116,13 @@ int main(void){
     // Prioritize cows with less |cow's max_spf - bottle's spf|  
     CowQueue waiting_cows;
 
-    for(Bottles::iterator bit = bottles.begin(); bit != bottles.end(); ++bit) {
-        if (cit == cows.end()) {
-            #ifndef ONLINE_JUDGE
-            cerr << "[no cow]" << endl;
-            #endif //ONLINE_JUDGE
-            break;
-        }
-
+    for(Bottles::iterator bit = bottles.begin(); bit != bottles.end(); ++bit){
         #ifndef ONLINE_JUDGE
         cerr << "[for bottle] "; print_bottle(*bit); cerr << endl;
         #endif //ONLINE_JUDGE
 
         // Find cows such that cow.min_spf <= bottle.spf <= cow.max_spf
-        while(cit != cows.end() && cit->min_spf <= bit->spf) {
+        while(cit != cows.end() && cit->min_spf <= bit->spf){
 
             #ifndef ONLINE_JUDGE
             cerr << " [cow_queue.push] "; print_cow(*cit); cerr << endl;
@@ -144,9 +137,9 @@ int main(void){
         #endif //ONLINE_JUDGE
 
         int lotion = bit->cover;
-        while (lotion > 0 && !waiting_cows.empty()) {
+        while(lotion > 0 && !waiting_cows.empty()){
             Cow c = waiting_cows.top(); waiting_cows.pop();
-            if (c.min_spf <= bit->spf && bit->spf <= c.max_spf){
+            if(c.min_spf <= bit->spf && bit->spf <= c.max_spf){
                 // Use this bottle to the cow!
                 #ifndef ONLINE_JUDGE
                 cerr << " [covered] "; print_cow(c); cerr << lotion << endl;
