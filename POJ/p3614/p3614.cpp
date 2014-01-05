@@ -117,13 +117,19 @@ int main(void){
     CowQueue waiting_cows;
 
     for(Bottles::iterator bit = bottles.begin(); bit != bottles.end(); ++bit) {
+        if (cit == cows.end()) {
+            #ifndef ONLINE_JUDGE
+            cerr << "[no cow]" << endl;
+            #endif //ONLINE_JUDGE
+            break;
+        }
 
         #ifndef ONLINE_JUDGE
         cerr << "[for bottle] "; print_bottle(*bit); cerr << endl;
         #endif //ONLINE_JUDGE
 
         // Find cows such that cow.min_spf <= bottle.spf <= cow.max_spf
-        while(cit != cows.end() && cit->min_spf < bit->spf) {
+        while(cit != cows.end() && cit->min_spf <= bit->spf) {
 
             #ifndef ONLINE_JUDGE
             cerr << " [cow_queue.push] "; print_cow(*cit); cerr << endl;
@@ -139,23 +145,16 @@ int main(void){
 
         int lotion = bit->cover;
         while (lotion > 0 && !waiting_cows.empty()) {
-            Cow c = waiting_cows.top();
-
-            #ifndef ONLINE_JUDGE
-            cerr << " [cow_queue.top()] "; print_cow(c); cerr << endl;
-            #endif //ONLINE_JUDGE
-
+            Cow c = waiting_cows.top(); waiting_cows.pop();
             if (c.min_spf <= bit->spf && bit->spf <= c.max_spf){
-                // Cover the cow!
+                // Use this bottle to the cow!
                 #ifndef ONLINE_JUDGE
-                cerr << " [covered] "; print_cow(c); cerr << endl;
+                cerr << " [covered] "; print_cow(c); cerr << lotion << endl;
                 #endif //ONLINE_JUDGE
 
                 lotion--;
                 n_covered++;
             } 
-
-            waiting_cows.pop();
         }
         
         #ifndef ONLINE_JUDGE
