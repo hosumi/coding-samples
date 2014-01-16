@@ -49,7 +49,7 @@ typedef vector<Edge> Edges;
 int main(void){
     int n;
     while(cin >> n) {
-        Edges edges; 
+        Edges edges; edges.reserve(n * n);
         for(int i = 0; i < n; i++){
             for(int j = 0; j < n; j++){
                 int c; cin >> c;
